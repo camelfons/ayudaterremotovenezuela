@@ -40,6 +40,7 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
     a {
@@ -93,6 +94,7 @@
       place-items: center;
       background: #fff3f3;
       border: 1px solid #ffd0d0;
+      flex: 0 0 auto;
     }
 
     .live-pill {
@@ -455,6 +457,7 @@
         grid-template-columns: 1fr auto;
         gap: 12px;
         padding: 14px 0;
+        position: relative;
       }
 
       .brand {
@@ -477,29 +480,35 @@
 
       .nav-actions {
         display: none;
-        grid-column: 1 / -1;
-        width: calc(100% + 28px);
-        margin-left: -14px;
-        margin-right: -14px;
-        margin-bottom: -14px;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        margin: 0;
         padding: 0;
         border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
         background: #ffffff;
+        box-shadow: 0 18px 35px rgba(16, 24, 39, 0.12);
+        z-index: 45;
       }
 
       .nav-actions.is-open {
         display: grid;
+        grid-template-columns: 1fr;
       }
 
       .nav-actions .btn {
-        width: 100%;
+        width: 100vw;
         justify-content: flex-start;
         border-radius: 0;
         border: 0;
         border-bottom: 1px solid rgba(16, 24, 39, 0.08);
-        padding: 18px 22px;
+        padding: 21px 24px;
         box-shadow: none;
-        font-size: 16px;
+        font-size: 17px;
+        text-align: left;
       }
 
       .nav-actions .btn:hover {
@@ -508,54 +517,55 @@
       }
 
       .nav-actions .btn::before {
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
         display: inline-grid;
         place-items: center;
         border-radius: 10px;
-        margin-right: 4px;
-        font-size: 17px;
+        margin-right: 8px;
+        font-size: 18px;
+        flex: 0 0 auto;
       }
 
       .nav-actions a[href="#donar"] {
-        background: #fff9df;
+        background: #fff6cf;
         color: #2f2500;
       }
 
       .nav-actions a[href="#donar"]::before {
         content: "💛";
-        background: #fff0a8;
+        background: #ffec8a;
       }
 
       .nav-actions a[href="#ayuda"] {
-        background: #edf5ff;
+        background: #e6f2ff;
         color: #082f5f;
       }
 
       .nav-actions a[href="#ayuda"]::before {
         content: "🤝";
-        background: #d9ebff;
+        background: #cfe6ff;
       }
 
       .nav-actions a[href="#verificar"] {
-        background: #fff0f0;
+        background: #ffe8e8;
         color: #7f1016;
       }
 
       .nav-actions a[href="#verificar"]::before {
         content: "🛡️";
-        background: #ffdada;
+        background: #ffd0d0;
       }
 
       .nav-actions a[href="#compartir"] {
-        background: #eafff2;
+        background: #e6fff0;
         color: #075e36;
         border-bottom: 0;
       }
 
       .nav-actions a[href="#compartir"]::before {
         content: "🟢";
-        background: #c9f7dc;
+        background: #c5f7d9;
       }
 
       .live-floating-mobile {
