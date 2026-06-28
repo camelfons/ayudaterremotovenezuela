@@ -1,23 +1,681 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ayuda Terremoto Venezuela</title>
-</head>
-<body>
-  <h1>Ayuda oficial para afectados por el terremoto en Venezuela</h1>
-  <p>Esta web no recibe dinero ni procesa donaciones. Solo reúne enlaces oficiales y verificados.</p>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ayuda Terremoto Venezuela | Enlaces oficiales para donar</title>
+  <meta name="description" content="Enlaces oficiales y verificados para donar y ayudar a los afectados por el terremoto en Venezuela. Esta web no recibe dinero ni procesa donaciones." />
 
-  <h2>Donaciones oficiales</h2>
-  <ul>
-    <li><a href="https://donate.redcrossredcrescent.org/ifrc/venezuela-earthquake/">Cruz Roja / IFRC</a></li>
-    <li><a href="https://donate.caritas.org/VenezuelaSP/">Cáritas Internationalis</a></li>
-    <li><a href="https://www.unicef.org.uk/donate/donate-to-our-venezuela-earthquake-appeal/">UNICEF UK</a></li>
-    <li><a href="https://www.savethechildren.es/donacion-ong/terremoto-en-venezuela-2026">Save the Children España</a></li>
-    <li><a href="https://www.globalgiving.org/projects/venezuela-earthquake-relief-fund/">GlobalGiving</a></li>
-    <li><a href="https://donate.worldvision.org/give/venezuela-relief-fund">World Vision</a></li>
-    <li><a href="https://internationalmedicalcorps.org/emergency-response/venezuela-earthquakes/">International Medical Corps</a></li>
-  </ul>
+  <meta property="og:title" content="Ayuda Terremoto Venezuela" />
+  <meta property="og:description" content="Enlaces oficiales para donar y ayudar de forma segura a los afectados por el terremoto en Venezuela." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #101827;
+      --muted: #5b6475;
+      --border: #dfe4ee;
+      --red: #cf1f25;
+      --blue: #0f4c81;
+      --yellow: #f4c430;
+      --green: #0b8f5a;
+      --dark: #111827;
+      --shadow: 0 10px 30px rgba(16, 24, 39, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .top-strip {
+      height: 8px;
+      background: linear-gradient(90deg, var(--yellow) 0 33.3%, var(--blue) 33.3% 66.6%, var(--red) 66.6% 100%);
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #fff3f3;
+      border: 1px solid #ffd0d0;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: #ffffff;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--dark);
+      border-color: var(--border);
+    }
+
+    .btn-green {
+      background: var(--green);
+      color: #ffffff;
+    }
+
+    .hero {
+      padding: 56px 0 34px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #fff7db;
+      color: #5c4100;
+      border: 1px solid #ffe08a;
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.02;
+      margin: 0 0 18px;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      font-size: clamp(18px, 2.2vw, 22px);
+      color: var(--muted);
+      margin: 0 0 24px;
+      max-width: 760px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .trust-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .trust-card h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .trust-card ul {
+      padding-left: 20px;
+      margin: 12px 0 0;
+      color: var(--muted);
+    }
+
+    .warning {
+      margin-top: 28px;
+      background: #fff0f0;
+      border: 1px solid #ffb4b4;
+      color: #86181d;
+      padding: 16px 18px;
+      border-radius: 16px;
+      font-weight: 700;
+    }
+
+    section {
+      padding: 34px 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: clamp(26px, 3vw, 36px);
+      letter-spacing: -0.03em;
+    }
+
+    .section-title p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 720px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(16, 24, 39, 0.04);
+      display: flex;
+      flex-direction: column;
+      min-height: 245px;
+    }
+
+    .card .tag {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      background: #edf4ff;
+      color: #0f4c81;
+      margin-bottom: 14px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 21px;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin: 0 0 16px;
+      font-size: 15px;
+    }
+
+    .card .spacer {
+      flex: 1;
+    }
+
+    .donate-link {
+      display: inline-flex;
+      justify-content: center;
+      width: 100%;
+      background: var(--dark);
+      color: #ffffff;
+      padding: 12px 14px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 900;
+      margin-top: 12px;
+    }
+
+    .donate-link.red {
+      background: var(--red);
+    }
+
+    .donate-link.blue {
+      background: var(--blue);
+    }
+
+    .donate-link.green {
+      background: var(--green);
+    }
+
+    .external-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .external-box h3 {
+      margin-top: 0;
+    }
+
+    .link-list {
+      display: grid;
+      gap: 10px;
+      padding: 0;
+      margin: 16px 0 0;
+      list-style: none;
+    }
+
+    .link-list a {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fafbff;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .share-box {
+      background: linear-gradient(135deg, #0b8f5a, #05744a);
+      color: #ffffff;
+      border-radius: 26px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .share-box h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
+
+    .share-box p {
+      margin: 0;
+      opacity: 0.92;
+    }
+
+    footer {
+      padding: 34px 0 48px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+      margin-top: 34px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .grid,
+      .share-box,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-actions {
+        justify-content: flex-start;
+      }
+
+      .card {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(100% - 22px, 1120px);
+      }
+
+      .hero {
+        padding-top: 36px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-actions {
+        width: 100%;
+      }
+
+      .link-list a {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-strip"></div>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-icon">🇻🇪</div>
+        <div>Ayuda Terremoto Venezuela</div>
+      </div>
+
+      <nav class="nav-actions" aria-label="Navegación principal">
+        <a class="btn btn-secondary" href="#donar">Donar</a>
+        <a class="btn btn-secondary" href="#ayuda">Pedir u ofrecer ayuda</a>
+        <a class="btn btn-primary" href="#compartir">Compartir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="badge">⚠️ Enlaces oficiales y recursos externos</div>
+            <h1>Ayuda de forma segura a los afectados por el terremoto en Venezuela</h1>
+            <p class="lead">
+              Esta página reúne enlaces de donación y plataformas de ayuda para que venezolanos dentro y fuera del país puedan contribuir sin caer en estafas.
+            </p>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#donar">Quiero donar dinero</a>
+              <a class="btn btn-green" href="#ayuda">Necesito u ofrezco ayuda</a>
+              <a class="btn btn-secondary" href="#verificar">Verificar información</a>
+            </div>
+          </div>
+
+          <aside class="trust-card">
+            <h2>Importante</h2>
+            <p>
+              Esta web no recibe dinero, no procesa pagos y no coordina rescates. Solo comparte enlaces externos para facilitar ayuda segura.
+            </p>
+            <ul>
+              <li>Dona solo en páginas oficiales.</li>
+              <li>No envíes dinero a cuentas personales no verificadas.</li>
+              <li>Si hay peligro inmediato, contacta primero a emergencias locales.</li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="warning">
+          Si tú o alguien cercano está en peligro inmediato, llama primero a los servicios de emergencia, bomberos, Protección Civil o autoridades locales. Esta web no sustituye canales oficiales de emergencia.
+        </div>
+      </div>
+    </section>
+
+    <section id="donar">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Donaciones económicas</h2>
+            <p>
+              Enlaces de campañas y organizaciones humanitarias. Revisa siempre que el dominio sea correcto antes de donar.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <span class="tag">Cruz Roja / IFRC</span>
+            <h3>IFRC Venezuela Earthquake</h3>
+            <p>Campaña internacional de la Federación Internacional de la Cruz Roja y la Media Luna Roja.</p>
+            <div class="spacer"></div>
+            <a class="donate-link red" href="https://donate.redcrossredcrescent.org/ifrc/venezuela-earthquake/" target="_blank" rel="noopener noreferrer">Donar en IFRC</a>
+          </article>
+
+          <article class="card">
+            <span class="tag">Cáritas</span>
+            <h3>Cáritas Internationalis</h3>
+            <p>Campaña internacional de Cáritas para apoyar la respuesta humanitaria en Venezuela.</p>
+            <div class="spacer"></div>
+            <a class="donate-link" href="https://donate.caritas.org/VenezuelaSP/" target="_blank" rel="noopener noreferrer">Donar en Cáritas</a>
+          </article>
+
+          <article class="card">
+            <span class="tag">UNICEF</span>
+            <h3>UNICEF UK</h3>
+            <p>Llamamiento de UNICEF para apoyar a niños y familias afectados por los terremotos.</p>
+            <div class="spacer"></div>
+            <a class="donate-link blue" href="https://www.unicef.org.uk/donate/donate-to-our-venezuela-earthquake-appeal/" target="_blank" rel="noopener noreferrer">Donar en UNICEF</a>
+          </article>
+
+          <article class="card">
+            <span class="tag">Save the Children</span>
+            <h3>Save the Children España</h3>
+            <p>Campaña de donación para ayudar a niñas, niños y familias afectadas.</p>
+            <div class="spacer"></div>
+            <a class="donate-link red" href="https://www.savethechildren.es/donacion-ong/terremoto-en-venezuela-2026" target="_blank" rel="noopener noreferrer">Donar en Save the Children</a>
+          </article>
+
+          <article class="card">
+            <span class="tag">GlobalGiving</span>
+            <h3>Venezuela Earthquake Relief Fund</h3>
+            <p>Fondo de ayuda para respuesta de emergencia y recuperación tras el terremoto.</p>
+            <div class="spacer"></div>
+            <a class="donate-link green" href="https://www.globalgiving.org/projects/venezuela-earthquake-relief-fund/" target="_blank" rel="noopener noreferrer">Donar en GlobalGiving</a>
+          </article>
+
+          <article class="card">
+            <span class="tag">World Vision</span>
+            <h3>Venezuela Relief Fund</h3>
+            <p>Fondo de ayuda de World Vision para niños y familias afectadas.</p>
+            <div class="spacer"></div>
+            <a class="donate-link" href="https://donate.worldvision.org/give/venezuela-relief-fund" target="_blank" rel="noopener noreferrer">Donar en World Vision</a>
+          </article>
+
+          <article class="card">
+            <span class="tag">Salud</span>
+            <h3>International Medical Corps</h3>
+            <p>Respuesta médica y humanitaria para personas afectadas por la emergencia.</p>
+            <div class="spacer"></div>
+            <a class="donate-link blue" href="https://internationalmedicalcorps.org/emergency-response/venezuela-earthquakes/" target="_blank" rel="noopener noreferrer">Ver campaña</a>
+          </article>
+
+          <article class="card">
+            <span class="tag">UNICEF</span>
+            <h3>UNICEF Ireland</h3>
+            <p>Campaña de UNICEF Irlanda para la emergencia por el terremoto en Venezuela.</p>
+            <div class="spacer"></div>
+            <a class="donate-link blue" href="https://www.unicef.ie/donate/venezuela-earthquake-appeal/" target="_blank" rel="noopener noreferrer">Donar en UNICEF Ireland</a>
+          </article>
+
+          <article class="card">
+            <span class="tag">Save the Children</span>
+            <h3>Save the Children International</h3>
+            <p>Canal internacional de Save the Children para apoyar a familias afectadas.</p>
+            <div class="spacer"></div>
+            <a class="donate-link red" href="https://www.savethechildren.net/donate/venezuela-earthquake" target="_blank" rel="noopener noreferrer">Donar internacionalmente</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="ayuda">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Pedir u ofrecer ayuda</h2>
+            <p>
+              Plataformas externas que están organizando reportes, mapas o coordinación comunitaria. Úsalas con prudencia y verifica antes de actuar.
+            </p>
+          </div>
+        </div>
+
+        <div class="external-box">
+          <h3>Plataformas comunitarias externas</h3>
+          <p class="small">
+            Estas plataformas no pertenecen a esta web. Las compartimos para correr la voz y facilitar que más personas encuentren canales de ayuda.
+          </p>
+
+          <ul class="link-list">
+            <li>
+              <a href="https://ayudavenezuela.pages.dev/" target="_blank" rel="noopener noreferrer">
+                <span>Ayuda Venezuela / Red comunitaria</span>
+                <span>↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://sosvenezuela2026.com/" target="_blank" rel="noopener noreferrer">
+                <span>SOS Venezuela 2026</span>
+                <span>↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://terremotovenezuela.app/" target="_blank" rel="noopener noreferrer">
+                <span>Terremoto Venezuela App</span>
+                <span>↗</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          No publiques datos sensibles de víctimas, menores de edad, direcciones privadas o teléfonos personales sin consentimiento. En emergencias reales, prioriza canales oficiales.
+        </div>
+      </div>
+    </section>
+
+    <section id="verificar">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Verificar información</h2>
+            <p>
+              Antes de donar o compartir, revisa fuentes humanitarias reconocidas y evita cadenas no verificadas.
+            </p>
+          </div>
+        </div>
+
+        <div class="external-box">
+          <ul class="link-list">
+            <li>
+              <a href="https://reliefweb.int/disaster/eq-2026-000093-ven" target="_blank" rel="noopener noreferrer">
+                <span>ReliefWeb — reportes humanitarios</span>
+                <span>↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.unocha.org/venezuela" target="_blank" rel="noopener noreferrer">
+                <span>OCHA Venezuela — Naciones Unidas</span>
+                <span>↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.ifrc.org/emergency/venezuela-earthquake-2026" target="_blank" rel="noopener noreferrer">
+                <span>IFRC — emergencia Venezuela</span>
+                <span>↗</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="compartir">
+      <div class="container">
+        <div class="share-box">
+          <div>
+            <h2>Comparte esta página</h2>
+            <p>
+              Mientras más personas tengan enlaces seguros, menos espacio hay para estafas y cadenas falsas.
+            </p>
+          </div>
+          <a
+            class="btn btn-secondary"
+            href="https://wa.me/?text=Enlaces%20oficiales%20para%20donar%20y%20ayudar%20a%20los%20afectados%20por%20el%20terremoto%20en%20Venezuela%3A%20https%3A%2F%2Fayudaterremotovenezuela.carlosfonseca.workers.dev%2F"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Compartir por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <strong>Ayuda Terremoto Venezuela</strong>
+        <p>
+          Página independiente de difusión. No recibimos dinero, no procesamos pagos y no estamos afiliados oficialmente a las organizaciones enlazadas.
+        </p>
+      </div>
+
+      <div>
+        <strong>Aviso de seguridad</strong>
+        <p>
+          Verifica siempre el dominio antes de donar. Evita transferencias a cuentas personales, enlaces acortados sospechosos o campañas sin fuente clara.
+        </p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
