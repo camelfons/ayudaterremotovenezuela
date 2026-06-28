@@ -21,6 +21,7 @@
       --blue: #0f4c81;
       --yellow: #f4c430;
       --green: #0b8f5a;
+      --whatsapp: #25d366;
       --dark: #111827;
       --shadow: 0 10px 30px rgba(16, 24, 39, 0.08);
     }
@@ -477,19 +478,84 @@
       .nav-actions {
         display: none;
         grid-column: 1 / -1;
-        width: 100%;
-        padding: 12px 0 4px;
+        width: calc(100% + 28px);
+        margin-left: -14px;
+        margin-right: -14px;
+        margin-bottom: -14px;
+        padding: 0;
         border-top: 1px solid var(--border);
+        background: #ffffff;
       }
 
       .nav-actions.is-open {
         display: grid;
-        gap: 10px;
       }
 
       .nav-actions .btn {
         width: 100%;
-        justify-content: center;
+        justify-content: flex-start;
+        border-radius: 0;
+        border: 0;
+        border-bottom: 1px solid rgba(16, 24, 39, 0.08);
+        padding: 18px 22px;
+        box-shadow: none;
+        font-size: 16px;
+      }
+
+      .nav-actions .btn:hover {
+        transform: none;
+        box-shadow: none;
+      }
+
+      .nav-actions .btn::before {
+        width: 28px;
+        height: 28px;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 10px;
+        margin-right: 4px;
+        font-size: 17px;
+      }
+
+      .nav-actions a[href="#donar"] {
+        background: #fff9df;
+        color: #2f2500;
+      }
+
+      .nav-actions a[href="#donar"]::before {
+        content: "💛";
+        background: #fff0a8;
+      }
+
+      .nav-actions a[href="#ayuda"] {
+        background: #edf5ff;
+        color: #082f5f;
+      }
+
+      .nav-actions a[href="#ayuda"]::before {
+        content: "🤝";
+        background: #d9ebff;
+      }
+
+      .nav-actions a[href="#verificar"] {
+        background: #fff0f0;
+        color: #7f1016;
+      }
+
+      .nav-actions a[href="#verificar"]::before {
+        content: "🛡️";
+        background: #ffdada;
+      }
+
+      .nav-actions a[href="#compartir"] {
+        background: #eafff2;
+        color: #075e36;
+        border-bottom: 0;
+      }
+
+      .nav-actions a[href="#compartir"]::before {
+        content: "🟢";
+        background: #c9f7dc;
       }
 
       .live-floating-mobile {
@@ -518,14 +584,61 @@
       }
 
       .hero-grid,
-      .grid,
       .share-box,
       .footer-grid {
         grid-template-columns: 1fr;
       }
 
+      .grid {
+        display: flex;
+        overflow-x: auto;
+        gap: 14px;
+        padding: 2px 2px 18px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .grid::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .grid::-webkit-scrollbar-track {
+        background: #eef2f7;
+        border-radius: 999px;
+      }
+
+      .grid::-webkit-scrollbar-thumb {
+        background: #c7d0df;
+        border-radius: 999px;
+      }
+
       .card {
-        min-height: auto;
+        min-width: 82%;
+        max-width: 82%;
+        min-height: 260px;
+        scroll-snap-align: start;
+      }
+
+      .external-box {
+        padding: 18px;
+      }
+
+      .link-list a {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        padding: 16px 14px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .link-list a span:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .link-list a span:last-child {
+        justify-self: end;
       }
     }
 
@@ -542,7 +655,7 @@
         font-size: 17px;
       }
 
-      .btn {
+      .hero-actions .btn {
         width: 100%;
       }
 
@@ -550,9 +663,9 @@
         width: 100%;
       }
 
-      .link-list a {
-        align-items: flex-start;
-        flex-direction: column;
+      .card {
+        min-width: 88%;
+        max-width: 88%;
       }
 
       .live-floating-mobile {
@@ -651,7 +764,7 @@
           </div>
         </div>
 
-        <div class="grid">
+        <div class="grid" aria-label="Carrusel de donaciones oficiales">
           <article class="card">
             <span class="tag">Cruz Roja / IFRC</span>
             <h3>IFRC Venezuela Earthquake</h3>
