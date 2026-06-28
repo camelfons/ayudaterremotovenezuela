@@ -480,6 +480,71 @@
       gap: 18px;
     }
 
+    .cookie-banner {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      width: min(920px, calc(100% - 32px));
+      z-index: 100;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 50px rgba(16, 24, 39, 0.18);
+      border-radius: 22px;
+      padding: 18px;
+      display: none;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .cookie-banner.is-visible {
+      display: grid;
+      grid-template-columns: 1fr auto;
+    }
+
+    .cookie-banner strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--dark);
+    }
+
+    .cookie-banner p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .cookie-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .cookie-btn {
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--dark);
+      font-weight: 900;
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .cookie-btn.accept {
+      background: var(--green);
+      border-color: var(--green);
+      color: #ffffff;
+    }
+
+    .privacy-note {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
     @media (max-width: 980px) {
       body {
         padding-bottom: 74px;
@@ -691,6 +756,18 @@
       .link-list a span:last-child {
         justify-self: end;
       }
+
+      .cookie-banner.is-visible {
+        grid-template-columns: 1fr;
+      }
+
+      .cookie-actions {
+        justify-content: stretch;
+      }
+
+      .cookie-btn {
+        flex: 1;
+      }
     }
 
     @media (max-width: 520px) {
@@ -725,6 +802,11 @@
 
       .share-box {
         padding: 22px;
+      }
+
+      .cookie-banner {
+        bottom: 88px;
+        width: calc(100% - 24px);
       }
     }
   </style>
@@ -1002,9 +1084,72 @@
         <p>
           Verifica siempre el dominio antes de donar. Evita transferencias a cuentas personales, enlaces acortados sospechosos o campañas sin fuente clara.
         </p>
+        <p class="privacy-note">
+          Esta página puede usar Google Analytics para medir visitas generales y mejorar la información publicada.
+        </p>
       </div>
     </div>
   </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies y privacidad">
+    <div>
+      <strong>Privacidad y cookies</strong>
+      <p>
+        Esta página usa Google Analytics para entender visitas generales y mejorar la información. No recaudo dinero, no proceso pagos y no vendo datos.
+      </p>
+    </div>
+
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="reject-analytics">Rechazar</button>
+      <button class="cookie-btn accept" id="accept-analytics">Aceptar</button>
+    </div>
+  </div>
+
+  <script>
+    const GA_MEASUREMENT_ID = "G-BJ3W67Z86W";
+
+    function loadGoogleAnalytics() {
+      if (window.__gaLoaded) return;
+      window.__gaLoaded = true;
+
+      const gaScript = document.createElement("script");
+      gaScript.async = true;
+      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_MEASUREMENT_ID;
+      document.head.appendChild(gaScript);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+
+      gtag("js", new Date());
+      gtag("config", GA_MEASUREMENT_ID, {
+        anonymize_ip: true
+      });
+    }
+
+    const cookieBanner = document.getElementById("cookie-banner");
+    const acceptAnalytics = document.getElementById("accept-analytics");
+    const rejectAnalytics = document.getElementById("reject-analytics");
+
+    const analyticsConsent = localStorage.getItem("analytics_consent");
+
+    if (analyticsConsent === "accepted") {
+      loadGoogleAnalytics();
+    } else if (!analyticsConsent) {
+      cookieBanner.classList.add("is-visible");
+    }
+
+    acceptAnalytics.addEventListener("click", () => {
+      localStorage.setItem("analytics_consent", "accepted");
+      cookieBanner.classList.remove("is-visible");
+      loadGoogleAnalytics();
+    });
+
+    rejectAnalytics.addEventListener("click", () => {
+      localStorage.setItem("analytics_consent", "rejected");
+      cookieBanner.classList.remove("is-visible");
+    });
+  </script>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
