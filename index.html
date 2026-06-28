@@ -722,90 +722,69 @@
     </div>
   </footer>
 
-  <!--
-    CONTADOR REAL DE USUARIOS EN VIVO
-
-    Para activarlo:
-    1. Crea un proyecto en Firebase.
-    2. Activa Realtime Database.
-    3. Crea una app web.
-    4. Reemplaza los valores PEGAR_AQUI en firebaseConfig.
-    5. Publica de nuevo.
-
-    Mientras no configures Firebase, el contador mostrará "—".
-  -->
-
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 
   <script>
     const firebaseConfig = {
-    apiKey: "AIzaSyCi9HiC3_0qRj_q1RwaNUrWk0Xc8fDsgeM",
-    authDomain: "ayuda-terremoto-venezuel-fff86.firebaseapp.com",
-    projectId: "ayuda-terremoto-venezuel-fff86",
-    storageBucket: "ayuda-terremoto-venezuel-fff86.firebasestorage.app",
-    messagingSenderId: "616646328009",
-    appId: "1:616646328009:web:d85b56197da804b6ef1718"
-  };
-
+      apiKey: "AIzaSyCi9HiC3_0qRj_q1RwaNUrWk0Xc8fDsgeM",
+      authDomain: "ayuda-terremoto-venezuel-fff86.firebaseapp.com",
+      databaseURL: "https://ayuda-terremoto-venezuel-fff86-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "ayuda-terremoto-venezuel-fff86",
+      storageBucket: "ayuda-terremoto-venezuel-fff86.firebasestorage.app",
+      messagingSenderId: "616646328009",
+      appId: "1:616646328009:web:d85b56197da804b6ef1718"
+    };
 
     const liveCountElement = document.getElementById("live-count");
 
-    function firebaseIsConfigured(config) {
-      return (
-        config.apiKey &&
-        config.databaseURL &&
-        !config.apiKey.includes("PEGAR_AQUI") &&
-        !config.databaseURL.includes("PEGAR_AQUI")
-      );
-    }
+    try {
+      firebase.initializeApp(firebaseConfig);
 
-    if (firebaseIsConfigured(firebaseConfig)) {
-      try {
-        firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
 
-        const db = firebase.database();
+      let sessionId = localStorage.getItem("visitor_session_id");
 
-        let sessionId = localStorage.getItem("visitor_session_id");
-
-        if (!sessionId) {
+      if (!sessionId) {
+        if (window.crypto && crypto.randomUUID) {
           sessionId = crypto.randomUUID();
-          localStorage.setItem("visitor_session_id", sessionId);
+        } else {
+          sessionId = "visitor_" + Math.random().toString(36).slice(2) + Date.now();
         }
 
-        const userRef = db.ref("presence/" + sessionId);
-        const presenceRef = db.ref("presence");
+        localStorage.setItem("visitor_session_id", sessionId);
+      }
 
-        userRef.set({
+      const userRef = db.ref("presence/" + sessionId);
+      const presenceRef = db.ref("presence");
+
+      userRef.set({
+        online: true,
+        lastSeen: Date.now()
+      });
+
+      userRef.onDisconnect().remove();
+
+      setInterval(() => {
+        userRef.update({
           online: true,
           lastSeen: Date.now()
         });
+      }, 30000);
 
-        userRef.onDisconnect().remove();
+      presenceRef.on("value", snapshot => {
+        const users = snapshot.val() || {};
+        const now = Date.now();
 
-        setInterval(() => {
-          userRef.update({
-            online: true,
-            lastSeen: Date.now()
-          });
-        }, 30000);
+        const activeUsers = Object.values(users).filter(user => {
+          return user.lastSeen && now - user.lastSeen < 90000;
+        }).length;
 
-        presenceRef.on("value", snapshot => {
-          const users = snapshot.val() || {};
-          const now = Date.now();
-
-          const activeUsers = Object.values(users).filter(user => {
-            return user.lastSeen && now - user.lastSeen < 90000;
-          }).length;
-
-          liveCountElement.textContent = activeUsers;
-        });
-      } catch (error) {
-        liveCountElement.textContent = "—";
-        console.warn("No se pudo iniciar el contador en vivo:", error);
-      }
-    } else {
+        liveCountElement.textContent = activeUsers;
+      });
+    } catch (error) {
       liveCountElement.textContent = "—";
+      console.warn("No se pudo iniciar el contador en vivo:", error);
     }
   </script>
 </body>
