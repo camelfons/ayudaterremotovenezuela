@@ -29,6 +29,10 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -43,12 +47,20 @@
 
     .top-strip {
       height: 8px;
-      background: linear-gradient(90deg, var(--yellow) 0 33.3%, var(--blue) 33.3% 66.6%, var(--red) 66.6% 100%);
+      background: linear-gradient(
+        90deg,
+        var(--yellow) 0 33.3%,
+        var(--blue) 33.3% 66.6%,
+        var(--red) 66.6% 100%
+      );
     }
 
     header {
       background: #ffffff;
       border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
     }
 
     .container {
@@ -57,18 +69,18 @@
     }
 
     .nav {
-      display: flex;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
-      justify-content: space-between;
+      gap: 18px;
       padding: 18px 0;
-      gap: 16px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 18px;
     }
 
@@ -80,6 +92,29 @@
       place-items: center;
       background: #fff3f3;
       border: 1px solid #ffd0d0;
+    }
+
+    .live-pill {
+      justify-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #ecfdf3;
+      color: #06603f;
+      border: 1px solid #b7f0cf;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #12b76a;
+      box-shadow: 0 0 0 5px rgba(18, 183, 106, 0.14);
     }
 
     .nav-actions {
@@ -97,7 +132,7 @@
       padding: 11px 16px;
       border-radius: 999px;
       text-decoration: none;
-      font-weight: 800;
+      font-weight: 900;
       border: 1px solid transparent;
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -145,7 +180,7 @@
       background: #fff7db;
       color: #5c4100;
       border: 1px solid #ffe08a;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 14px;
       margin-bottom: 16px;
     }
@@ -197,7 +232,7 @@
       color: #86181d;
       padding: 16px 18px;
       border-radius: 16px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     section {
@@ -324,7 +359,7 @@
       border: 1px solid var(--border);
       background: #fafbff;
       text-decoration: none;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .small {
@@ -368,21 +403,25 @@
       gap: 18px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
+      .nav {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+      }
+
+      .live-pill {
+        justify-self: start;
+      }
+
+      .nav-actions {
+        justify-content: flex-start;
+      }
+
       .hero-grid,
       .grid,
       .share-box,
       .footer-grid {
         grid-template-columns: 1fr;
-      }
-
-      .nav {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .nav-actions {
-        justify-content: flex-start;
       }
 
       .card {
@@ -411,6 +450,11 @@
         align-items: flex-start;
         flex-direction: column;
       }
+
+      .live-pill {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -423,6 +467,12 @@
       <div class="brand">
         <div class="brand-icon">🇻🇪</div>
         <div>Ayuda Terremoto Venezuela</div>
+      </div>
+
+      <div class="live-pill" title="Personas consultando la página ahora">
+        <span class="live-dot"></span>
+        <strong id="live-count">—</strong>
+        <span>consultando ahora</span>
       </div>
 
       <nav class="nav-actions" aria-label="Navegación principal">
@@ -576,12 +626,6 @@
 
           <ul class="link-list">
             <li>
-              <a href="https://ayudavenezuela.pages.dev/" target="_blank" rel="noopener noreferrer">
-                <span>Ayuda Venezuela / Red comunitaria</span>
-                <span>↗</span>
-              </a>
-            </li>
-            <li>
               <a href="https://sosvenezuela2026.com/" target="_blank" rel="noopener noreferrer">
                 <span>SOS Venezuela 2026</span>
                 <span>↗</span>
@@ -677,5 +721,92 @@
       </div>
     </div>
   </footer>
+
+  <!--
+    CONTADOR REAL DE USUARIOS EN VIVO
+
+    Para activarlo:
+    1. Crea un proyecto en Firebase.
+    2. Activa Realtime Database.
+    3. Crea una app web.
+    4. Reemplaza los valores PEGAR_AQUI en firebaseConfig.
+    5. Publica de nuevo.
+
+    Mientras no configures Firebase, el contador mostrará "—".
+  -->
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "PEGAR_AQUI",
+      authDomain: "PEGAR_AQUI",
+      databaseURL: "PEGAR_AQUI",
+      projectId: "PEGAR_AQUI",
+      storageBucket: "PEGAR_AQUI",
+      messagingSenderId: "PEGAR_AQUI",
+      appId: "PEGAR_AQUI"
+    };
+
+    const liveCountElement = document.getElementById("live-count");
+
+    function firebaseIsConfigured(config) {
+      return (
+        config.apiKey &&
+        config.databaseURL &&
+        !config.apiKey.includes("PEGAR_AQUI") &&
+        !config.databaseURL.includes("PEGAR_AQUI")
+      );
+    }
+
+    if (firebaseIsConfigured(firebaseConfig)) {
+      try {
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.database();
+
+        let sessionId = localStorage.getItem("visitor_session_id");
+
+        if (!sessionId) {
+          sessionId = crypto.randomUUID();
+          localStorage.setItem("visitor_session_id", sessionId);
+        }
+
+        const userRef = db.ref("presence/" + sessionId);
+        const presenceRef = db.ref("presence");
+
+        userRef.set({
+          online: true,
+          lastSeen: Date.now()
+        });
+
+        userRef.onDisconnect().remove();
+
+        setInterval(() => {
+          userRef.update({
+            online: true,
+            lastSeen: Date.now()
+          });
+        }, 30000);
+
+        presenceRef.on("value", snapshot => {
+          const users = snapshot.val() || {};
+          const now = Date.now();
+
+          const activeUsers = Object.values(users).filter(user => {
+            return user.lastSeen && now - user.lastSeen < 90000;
+          }).length;
+
+          liveCountElement.textContent = activeUsers;
+        });
+      } catch (error) {
+        liveCountElement.textContent = "—";
+        console.warn("No se pudo iniciar el contador en vivo:", error);
+      }
+    } else {
+      liveCountElement.textContent = "—";
+    }
+  </script>
 </body>
 </html>
