@@ -60,7 +60,7 @@
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 40;
     }
 
     .container {
@@ -117,11 +117,48 @@
       box-shadow: 0 0 0 5px rgba(18, 183, 106, 0.14);
     }
 
+    .live-floating-mobile {
+      display: none;
+    }
+
     .nav-actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       justify-content: flex-end;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      border-radius: 14px;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background: var(--dark);
+      border-radius: 999px;
+      margin: 5px 0;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .menu-toggle.is-open span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .menu-toggle.is-open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.is-open span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
     }
 
     .btn {
@@ -237,6 +274,7 @@
 
     section {
       padding: 34px 0;
+      scroll-margin-top: 96px;
     }
 
     .section-title {
@@ -404,17 +442,79 @@
     }
 
     @media (max-width: 980px) {
-      .nav {
-        grid-template-columns: 1fr;
-        align-items: flex-start;
+      body {
+        padding-bottom: 74px;
       }
 
-      .live-pill {
-        justify-self: start;
+      .container {
+        width: min(100% - 28px, 1120px);
+      }
+
+      .nav {
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        padding: 14px 0;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+
+      .brand-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .menu-toggle {
+        display: block;
+        justify-self: end;
+      }
+
+      .live-pill-desktop {
+        display: none;
       }
 
       .nav-actions {
-        justify-content: flex-start;
+        display: none;
+        grid-column: 1 / -1;
+        width: 100%;
+        padding: 12px 0 4px;
+        border-top: 1px solid var(--border);
+      }
+
+      .nav-actions.is-open {
+        display: grid;
+        gap: 10px;
+      }
+
+      .nav-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .live-floating-mobile {
+        position: fixed;
+        left: 50%;
+        bottom: 16px;
+        transform: translateX(-50%);
+        z-index: 60;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 11px 15px;
+        border-radius: 999px;
+        background: #ecfdf3;
+        color: #06603f;
+        border: 1px solid #b7f0cf;
+        font-size: 13px;
+        font-weight: 900;
+        white-space: nowrap;
+        box-shadow: 0 12px 28px rgba(16, 24, 39, 0.18);
+      }
+
+      .hero {
+        padding: 36px 0 24px;
       }
 
       .hero-grid,
@@ -434,8 +534,12 @@
         width: min(100% - 22px, 1120px);
       }
 
-      .hero {
-        padding-top: 36px;
+      h1 {
+        font-size: clamp(32px, 10vw, 44px);
+      }
+
+      .lead {
+        font-size: 17px;
       }
 
       .btn {
@@ -451,9 +555,12 @@
         flex-direction: column;
       }
 
-      .live-pill {
-        width: 100%;
-        justify-content: center;
+      .live-floating-mobile {
+        width: calc(100% - 28px);
+      }
+
+      .share-box {
+        padding: 22px;
       }
     }
   </style>
@@ -469,19 +576,32 @@
         <div>Ayuda Terremoto Venezuela</div>
       </div>
 
-      <div class="live-pill" title="Personas consultando la página ahora">
+      <div class="live-pill live-pill-desktop" title="Personas consultando la página ahora">
         <span class="live-dot"></span>
         <strong id="live-count">—</strong>
         <span>consultando ahora</span>
       </div>
 
-      <nav class="nav-actions" aria-label="Navegación principal">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav-actions" id="nav-menu" aria-label="Navegación principal">
         <a class="btn btn-secondary" href="#donar">Donar</a>
         <a class="btn btn-secondary" href="#ayuda">Pedir u ofrecer ayuda</a>
+        <a class="btn btn-secondary" href="#verificar">Verificar información</a>
         <a class="btn btn-primary" href="#compartir">Compartir</a>
       </nav>
     </div>
   </header>
+
+  <div class="live-floating-mobile" title="Personas consultando la página ahora">
+    <span class="live-dot"></span>
+    <strong id="live-count-mobile">—</strong>
+    <span>consultando ahora</span>
+  </div>
 
   <main>
     <section class="hero">
@@ -737,6 +857,12 @@
     };
 
     const liveCountElement = document.getElementById("live-count");
+    const liveCountMobileElement = document.getElementById("live-count-mobile");
+
+    function updateLiveCount(value) {
+      if (liveCountElement) liveCountElement.textContent = value;
+      if (liveCountMobileElement) liveCountMobileElement.textContent = value;
+    }
 
     try {
       firebase.initializeApp(firebaseConfig);
@@ -780,11 +906,32 @@
           return user.lastSeen && now - user.lastSeen < 90000;
         }).length;
 
-        liveCountElement.textContent = activeUsers;
+        updateLiveCount(activeUsers);
       });
     } catch (error) {
-      liveCountElement.textContent = "—";
+      updateLiveCount("—");
       console.warn("No se pudo iniciar el contador en vivo:", error);
+    }
+  </script>
+
+  <script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const navMenu = document.getElementById("nav-menu");
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener("click", () => {
+        const isOpen = navMenu.classList.toggle("is-open");
+        menuToggle.classList.toggle("is-open", isOpen);
+        menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+
+      navMenu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          navMenu.classList.remove("is-open");
+          menuToggle.classList.remove("is-open");
+          menuToggle.setAttribute("aria-expanded", "false");
+        });
+      });
     }
   </script>
 </body>
